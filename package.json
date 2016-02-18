@@ -1,0 +1,22 @@
+{
+  "name": "belrun.ru",
+  "version": "0.0.1",
+  "description": "belrun.ru node.js application",
+  "main": "server.js",
+  "scripts": {
+    "start": "supervisor server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/belrun/belrun.ru.git"
+  },
+  "author": "BelRun Team",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/belrun/belrun.ru/issues"
+  },
+  "homepage": "https://github.com/belrun/belrun.ru#readme",
+  "dependencies": {
+    "express": "4.13.4"
+  }
+}
