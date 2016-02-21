@@ -1,0 +1,12 @@
+extends ../../../template/index
+
+append params
+	- var title = race.title;
+
+block body
+	.well
+		div #{moment(race.date).format('D MMMM HH:mm')}
+		h1 #{race.title}
+		div #{race.address}
+
+	.well

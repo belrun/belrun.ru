@@ -1,13 +1,13 @@
 'use strict';
 
-var MongoClient = require('mongodb').MongoClient,
-	Steppy = require('twostep').Steppy,
-	_ = require('underscore'),
-	Collection = require('mongodbext').Collection;
+var MongoClient = require('mongodb').MongoClient;
+var Steppy = require('twostep').Steppy;
+var _ = require('underscore');
+var Collection = require('mongodbext').Collection;
 
 var collections = {};
 
-var collectionNames = ['runnings'];
+var collectionNames = ['races'];
 
 _(collectionNames).each(function(name) {
 	try {
@@ -31,7 +31,7 @@ var createCollections = function(db) {
 var initCollections = function(db) {
 	_(collections).each(function(collection, name) {
 		if (collection.init) {
-			collection.init(db[name]);
+			collection.init(exports[name]);
 		}
 	});
 };

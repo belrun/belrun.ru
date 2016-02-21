@@ -6,6 +6,7 @@ var Steppy = require('twostep').Steppy;
 var path = require('path');
 var routes = require('./routes');
 var db = require('./db');
+var moment = require('moment');
 
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
@@ -21,12 +22,19 @@ var createApp = function(callback) {
 			app.set('env', config.env);
 			app.set('config', config);
 
+			app.set('view engine', 'jade');
+			app.set('views', './views');
+
+			app.locals = {
+				moment: moment
+			};
+
 			app.use(morgan('dev'));
+
+			app.use(compression());
 
 			app.use(bodyParser.json());
 			app.use(bodyParser.urlencoded({extended: true}));
-
-			app.use(compression());
 
 			app.use(express.static(path.join(__dirname, 'public'), {
 				lastModified: true

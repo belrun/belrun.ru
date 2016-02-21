@@ -2,7 +2,7 @@
 
 var _ = require('underscore');
 
-var routes = ['main', 'runnings'];
+var routes = ['main', 'races'];
 
 module.exports = function(app) {
 	_(routes).each(function(route) {
