@@ -2,6 +2,8 @@
   "name": "belrun.ru",
   "dependencies": {
     "bootstrap": "3.3.6",
-    "jquery": "2.2.0"
+    "jquery": "2.2.0",
+    "requirejs": "2.1.22",
+    "parsleyjs": "2.3.3"
   }
 }

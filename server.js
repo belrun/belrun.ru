@@ -6,7 +6,7 @@ var Steppy = require('twostep').Steppy;
 var path = require('path');
 var routes = require('./routes');
 var db = require('./db');
-var moment = require('moment');
+var locals = require('./helpers/locals');
 
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
@@ -25,9 +25,9 @@ var createApp = function(callback) {
 			app.set('view engine', 'jade');
 			app.set('views', './views');
 
-			app.locals = {
-				moment: moment
-			};
+			app.disable('x-powered-by');
+
+			app.locals = locals;
 
 			app.use(morgan('dev'));
 
