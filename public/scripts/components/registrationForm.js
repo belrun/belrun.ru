@@ -1,6 +1,6 @@
 'use strict';
 
-define(['jquery', 'helpers/ajax', 'helpers/validation'], function($, ajax, validation) {
+define(['jquery', 'helpers/ajax', 'helpers/validate'], function($, ajax, validate) {
 	var createRegistration = function(raceId, data) {
 		ajax.api({
 			url: '/races/' + raceId + '/registrations',
@@ -8,7 +8,7 @@ define(['jquery', 'helpers/ajax', 'helpers/validation'], function($, ajax, valid
 			data: data,
 			dataType: 'json',
 			success: function() {
-				console.log('>>>>>>>>>>>> success')
+
 			}
 		});
 	};
@@ -16,7 +16,7 @@ define(['jquery', 'helpers/ajax', 'helpers/validation'], function($, ajax, valid
 	return function(options) {
 		var $form = $(options.selector);
 
-		validation($form);
+		validate($form);
 
 		$form.on('submit', function(event) {
 			event.preventDefault();

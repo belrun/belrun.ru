@@ -33,6 +33,7 @@
   },
   "scripts": {
     "start": "supervisor server.js",
-    "dev": "supervisor --force-watch --no-restart-on error server.js"
+    "dev": "supervisor --force-watch --no-restart-on error server.js",
+    "lint": "jshint ./"
   }
 }

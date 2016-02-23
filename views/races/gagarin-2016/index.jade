@@ -1,4 +1,4 @@
-extends ../../../template/index
+extends ../../layout/index
 
 append params
 	- var title = race.title;
@@ -7,22 +7,25 @@ append styles
 	link(rel="stylesheet", href="/bower_components/bootstrap/dist/css/bootstrap.min.css")
 	link(rel="stylesheet", href="/bower_components/bootstrap/dist/css/bootstrap-theme.min.css")
 	link(rel="stylesheet", href="/bower_components/fullpage.js/dist/jquery.fullpage.css")
-	link(rel="stylesheet", href="/stylesheets/views/races/special/gagarin-2016.css")
+
+	link(rel="stylesheet", href="/stylesheets/views/races/gagarin-2016/index.css")
 
 append scripts
-	mixin requirejs('views/races/special/gagarin-2016')
+	mixin requirejs('views/races/gagarin-2016/index')
 
 block body
 	#fullpage
 		.section.active
 			.container
-				.well
-					div #{moment(race.date).format('D MMMM HH:mm')}
-					h1.h2 #{race.title}
-					div #{race.address}
+				.col-sm-6
+					img(src="/images/views/races/gagarin-2016/spaceship.png")
 
-				.text-center
-					a#letsgo-button.btn.btn-lg.btn-warning Поехали!
+				.col-sm-6
+					h1.h2 #{race.title}
+					div #{moment(race.date).format('D MMMM HH:mm')}
+					div #{race.address}
+					div
+						a#letsgo-button.btn.btn-lg.btn-warning(href="javascript:void(0);") Поехали!
 
 		.section
 			.container

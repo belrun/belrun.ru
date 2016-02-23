@@ -17,7 +17,7 @@ module.exports = function(app) {
 			function(err, race) {
 				if (!race) throw new Error('Race is not found');
 
-				res.render('races/special/' + race.name, {
+				res.render('races/' + race.name, {
 					race: race
 				});
 			},
