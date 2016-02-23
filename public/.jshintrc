@@ -1,0 +1,19 @@
+{
+	"browser": true,
+	"freeze": true,
+	"maxlen": 100,
+	"smarttabs": true,
+	"indent": 1,
+	"quotmark": "single",
+	"strict": true,
+	"globalstrict": true,
+	"undef": true,
+	"unused": true,
+	"immed": true,
+	"eqeqeq": true,
+	"forin": true,
+	"globals": {
+		"define": false,
+		"requirejs": false
+	}
+}

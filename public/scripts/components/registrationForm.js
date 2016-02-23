@@ -1,25 +1,30 @@
 'use strict';
 
-define(['jquery', 'parsley'], function($) {
+define(['jquery', 'helpers/ajax', 'helpers/validation'], function($, ajax, validation) {
+	var createRegistration = function(raceId, data) {
+		ajax.api({
+			url: '/races/' + raceId + '/registrations',
+			method: 'post',
+			data: data,
+			dataType: 'json',
+			success: function() {
+				console.log('>>>>>>>>>>>> success')
+			}
+		});
+	};
+
 	return function(options) {
 		var $form = $(options.selector);
 
-		$form.parsley({
-			errorClass: 'has-error',
-			successClass: 'has-success',
-			classHandler: function (ParsleyField) {
-				return ParsleyField.$element.parents('.form-group');
-			},
-			errorsContainer: function (ParsleyField) {
-				return ParsleyField.$element.parents('.form-group');
-			},
-			errorsWrapper: '<span class="help-block">',
-			errorTemplate: '<div></div>'
-		});
+		validation($form);
 
 		$form.on('submit', function(event) {
 			event.preventDefault();
 
+			createRegistration($form.data('raceId'), {
+				email: $form.find('[name=email]').val(),
+				name: $form.find('[name=name]').val()
+			});
 		});
 	};
 });

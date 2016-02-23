@@ -7,7 +7,7 @@ var Collection = require('mongodbext').Collection;
 
 var collections = {};
 
-var collectionNames = ['races'];
+var collectionNames = ['races', 'registrations'];
 
 _(collectionNames).each(function(name) {
 	try {
@@ -28,7 +28,7 @@ var createCollections = function(db) {
 	});
 };
 
-var initCollections = function(db) {
+var initCollections = function() {
 	_(collections).each(function(collection, name) {
 		if (collection.init) {
 			collection.init(exports[name]);

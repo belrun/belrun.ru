@@ -1,16 +1,17 @@
 'use strict';
 
 var express = require('express');
-var fs = require('fs');
 var Steppy = require('twostep').Steppy;
 var path = require('path');
 var routes = require('./routes');
 var db = require('./db');
 var locals = require('./helpers/locals');
 
+// middlewares
 var morgan = require('morgan');
-var bodyParser = require('body-parser');
 var compression = require('compression');
+var bodyParser = require('body-parser');
+var reqValidate = require('./middlewares/reqValidate');
 
 var config = require('./config');
 
@@ -19,6 +20,7 @@ var createApp = function(callback) {
 		function() {
 			var app = express();
 
+			// setup app options
 			app.set('env', config.env);
 			app.set('config', config);
 
@@ -29,6 +31,7 @@ var createApp = function(callback) {
 
 			app.locals = locals;
 
+			// middlewares
 			app.use(morgan('dev'));
 
 			app.use(compression());
@@ -40,6 +43,9 @@ var createApp = function(callback) {
 				lastModified: true
 			}));
 
+			app.use(reqValidate());
+
+			// routes
 			routes(app);
 
 			this.pass(app);
