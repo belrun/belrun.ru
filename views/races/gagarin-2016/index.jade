@@ -14,6 +14,8 @@ append scripts
 	mixin requirejs('views/races/gagarin-2016/index')
 
 block body
+	- var now = Date.now();
+
 	#fullpage
 		.section.active
 			.container
@@ -22,22 +24,34 @@ block body
 
 				.col-sm-6
 					h1.h2 #{race.title}
-					div #{moment(race.date).format('D MMMM HH:mm')}
-					div #{race.address}
+					div Начало #{moment(race.date).format('D MMMM в HH:mm')}
+					div Место: #{race.address}
+					if race.registration && now >= race.registration.beginDate && now < race.registration.endDate
+						div Количество участников: #{race.registration.participantsCount}
 					div
 						a#letsgo-button.btn.btn-lg.btn-warning(href="javascript:void(0);") Поехали!
 
-		.section
-			.container
-				.panel.panel-default
-					.panel-heading
-						h2.panel-title Регистрация
+		if race.registration
+			.section
+				.container
+					.panel.panel-default
+						.panel-heading
+							h2.panel-title Регистрация
 
-					.panel-body
-						form#registration-form(data-race-id="#{race._id}")
-							.form-group
-								input.form-control.input-lg(name="name", type="text", placeholder="Имя", required="")
-							.form-group
-								input.form-control.input-lg(name="email", type="email", placeholder="E-mail", required="")
-							.text-center
-								button.btn.btn-success.btn-lg(type="submit") Я бегу
+						.panel-body
+							if now < race.registration.beginDate
+								div Регистрация начнётся #{moment(race.registration.beginDate).format('D MMMM в HH:mm:ss')}
+							else if now >= race.registration.endDate
+								div Регистрация окончена.
+							else
+								form#registration-form(data-race-id="#{race._id}")
+									.form-group
+										input.form-control.input-lg(name="firstName", type="text", placeholder="Имя", required="")
+									.form-group
+										input.form-control.input-lg(name="lastName", type="text", placeholder="Фамилия", required="")
+									.form-group
+										input.form-control.input-lg(name="email", type="email", placeholder="E-mail", required="")
+									.text-center
+										button.btn.btn-success.btn-lg(type="submit") Я бегу
+
+									.js-result

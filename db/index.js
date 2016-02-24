@@ -7,7 +7,7 @@ var Collection = require('mongodbext').Collection;
 
 var collections = {};
 
-var collectionNames = ['races', 'registrations'];
+var collectionNames = ['races', 'participants'];
 
 _(collectionNames).each(function(name) {
 	try {

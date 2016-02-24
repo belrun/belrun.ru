@@ -1,0 +1,8 @@
+'use strict';
+
+var config = require('./config');
+
+module.exports = {
+	adapter: 'east-mongo',
+	url: config.mongodb.url
+};

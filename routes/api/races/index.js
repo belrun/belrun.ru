@@ -2,18 +2,23 @@
 
 var express = require('express');
 var Steppy = require('twostep').Steppy;
+var _ = require('underscore');
 var db = require('../../../db');
 
-var registrationsRouter = require('./registrations');
+var participantsRouter = require('./participants');
 
 var router = express.Router();
 
-router.use('/:raceId/registrations', registrationsRouter);
+router.use('/:raceId/participants', participantsRouter);
 
 router.get('/', function(req, res, next) {
 	Steppy(
 		function() {
-			db.races.find().toArray(this.slot());
+			var params = req.validate({
+				name: {type: 'string', minLength: 1}
+			});
+
+			db.races.find(_(params).pick('name')).toArray(this.slot());
 		},
 		function(err, races) {
 			res.json({races: races});
