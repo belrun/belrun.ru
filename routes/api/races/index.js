@@ -18,7 +18,10 @@ router.get('/', function(req, res, next) {
 				name: {type: 'string', minLength: 1}
 			});
 
-			db.races.find(_(params).pick('name')).toArray(this.slot());
+			db.races
+				.find(_(params).pick('name'))
+				.sort({_id: 1})
+				.toArray(this.slot());
 		},
 		function(err, races) {
 			res.json({races: races});
@@ -27,7 +30,7 @@ router.get('/', function(req, res, next) {
 	);
 });
 
-router.get('/:_id', function(req, res, next) {
+router.get('/:_id(\\d+)', function(req, res, next) {
 	Steppy(
 		function() {
 			var params = req.validate({
@@ -37,7 +40,9 @@ router.get('/:_id', function(req, res, next) {
 			db.races.findOne({_id: params._id}, this.slot());
 		},
 		function(err, race) {
-			if (!race) throw new Error('Race is not found');
+			if (!race) {
+				throw new Error('Race is not found');
+			}
 
 			res.json({race: race});
 		},

@@ -1,6 +1,7 @@
 'use strict';
 
 var express = require('express');
+var _ = require('underscore');
 var Steppy = require('twostep').Steppy;
 var db = require('../../../db');
 
@@ -13,10 +14,34 @@ router.get('/', function(req, res, next) {
 				raceId: {required: true, type: 'integer', minimum: 1}
 			});
 
-			db.participants.find({raceId: params.raceId}, {email: 0}).toArray(this.slot());
+			db.participants
+				.find({'race._id': params.raceId}, {email: 0})
+				.sort({_id: 1})
+				.toArray(this.slot());
 		},
 		function(err, participants) {
 			res.json({participants: participants});
+		},
+		next
+	);
+});
+
+router.get('/:_id(\\d+)', function(req, res, next) {
+	Steppy(
+		function() {
+			var params = req.validate({
+				raceId: {required: true, type: 'integer', minimum: 1},
+				_id: {required: true, type: 'integer', minimum: 1}
+			});
+
+			db.participants.findOne({_id: params._id, 'race._id': params.raceId}, {email: 0}, this.slot());
+		},
+		function(err, participant) {
+			if (!participant) {
+				throw new Error('Participant is not found');
+			}
+
+			res.json({participant: participant});
 		},
 		next
 	);
@@ -34,26 +59,13 @@ router.post('/', function(req, res, next) {
 				lastName: {required: true, type: 'string', minLength: 1}
 			});
 
-			db.races.findOne({_id: params.raceId}, {registration: 1}, this.slot());
-		},
-		function(err, race) {
-			if (!race) {
-				throw new Error('Race is not found');
-			}
+			var participant = _(params)
+				.chain()
+				.pick('email', 'firstName', 'lastName')
+				.extend({race: {_id: params.raceId}})
+				.value();
 
-			if (!race.registration) {
-				throw new Error('Race doesn\'t have a registration');
-			}
-
-			if (Date.now() < race.registration.beginDate) {
-				throw new Error('Registration hasn\'t begun yet');
-			}
-
-			if (Date.now() >= race.registration.endDate) {
-				throw new Error('Registration have already ended');
-			}
-
-			db.participants.insertOne(params, this.slot());
+			db.participants.insertOne(participant, this.slot());
 		},
 		function(err, participant) {
 			res.json({participant: participant});

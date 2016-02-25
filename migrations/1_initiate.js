@@ -17,7 +17,7 @@ exports.migrate = function(client, done) {
 			);
 
 			participantsCol.createIndex(
-				{email: 1, raceId: 1},
+				{email: 1, 'race._id': 1},
 				{unique: true},
 				this.slot()
 			);
