@@ -17,6 +17,13 @@ configBuilder.register({
 		},
 		mongodb: {
 			url: env.OPENSHIFT_MONGODB_DB_URL
+		},
+		mailer: {
+			service: 'Yandex',
+			auth: {
+				user: '',
+				pass: ''
+			}
 		}
 	}
 });

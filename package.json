@@ -25,6 +25,7 @@
     "mongodb": "2.1.7",
     "mongodbext": "2.0.1",
     "morgan": "1.7.0",
+    "nodemailer": "2.2.1",
     "twostep": "0.4.1",
     "underscore": "1.8.3"
   },
