@@ -37,6 +37,7 @@
   "scripts": {
     "start": "supervisor server.js",
     "dev": "supervisor --force-watch --no-restart-on error server.js",
-    "lint": "jshint ./"
+    "lint": "jshint ./",
+    "sync": "npm install && npm prune"
   }
 }

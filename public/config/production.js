@@ -1,5 +1,5 @@
 'use strict';
 
-requirejs.config({
-	baseUrl: '/'
+System.config({
+	baseURL: '/'
 });

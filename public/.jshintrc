@@ -13,7 +13,6 @@
 	"eqeqeq": true,
 	"forin": true,
 	"globals": {
-		"define": false,
-		"requirejs": false
+		"System": false
 	}
 }

@@ -1,4 +1,4 @@
-include ../mixins/requirejs
+include ../mixins/import
 
 doctype html
 
@@ -18,8 +18,8 @@ html
 	body
 		block body
 
-		script(src="/bower_components/requirejs/require.js")
+		script(src="/bower_components/system.js/dist/system.js")
 
-		include ./requirejs
+		include ./config
 
 		block scripts

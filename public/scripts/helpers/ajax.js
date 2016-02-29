@@ -1,18 +1,16 @@
 'use strict';
 
-define(['jquery'], function($) {
-	$.ajaxSetup({
-		cache: false
-	});
+import $ from 'jquery';
 
-	var ajax = function(options) {
-		return $.ajax(options);
-	};
-
-	ajax.api = function(options) {
-		options.url = '/api/v1.0' + (options.url.charAt(0) === '/' ? '' : '/') + options.url;
-		return ajax(options);
-	};
-
-	return ajax;
+$.ajaxSetup({
+	cache: false
 });
+
+export default function ajax(options) {
+	return $.ajax(options);
+}
+
+export function api(options) {
+	options.url = '/api/v1.0' + (options.url.charAt(0) === '/' ? '' : '/') + options.url;
+	return ajax(options);
+}

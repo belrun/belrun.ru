@@ -1,18 +1,19 @@
 'use strict';
 
-define([
-	'jquery', 'components/registrationForm', 'fullpage', 'slimscroll'
-], function($, registrationForm) {
-	$('#fullpage').fullpage({
-		scrollOverflow: true,
-		verticalCentered: false
-	});
+import $ from 'jquery';
+import registrationForm from 'components/registrationForm.js';
+import 'fullpage';
+import 'slimscroll';
 
-	$('#letsgo-button').on('click', function() {
-		$.fn.fullpage.moveSectionDown();
-	});
+$('#fullpage').fullpage({
+	scrollOverflow: true,
+	verticalCentered: false
+});
 
-	registrationForm({
-		selector: '#registration-form'
-	});
+$('#letsgo-button').on('click', function() {
+	$.fn.fullpage.moveSectionDown();
+});
+
+registrationForm({
+	selector: '#registration-form'
 });

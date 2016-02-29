@@ -7,5 +7,17 @@ require('./common');
 configBuilder.register({
 	name: 'development',
 	parent: 'common',
-	config: {}
+	config: {
+		mailer: {
+			transport: {
+				debug: true,
+				logger: true,
+				service: 'Yandex',
+				auth: {
+					user: 'test',
+					pass: 'test'
+				}
+			}
+		}
+	}
 });

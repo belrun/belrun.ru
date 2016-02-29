@@ -13,6 +13,13 @@ configBuilder.register({
 		mongodb: {
 			url: 'mongodb://127.0.0.1:27017/belrun'
 		},
-		mailer: {}
+		mailer: {
+			transport: {},
+			defaults: {
+				from: function(config) {
+					return 'BelRun Team <' + config.mailer.transport.auth.user + '>';
+				}
+			}
+		}
 	}
 });

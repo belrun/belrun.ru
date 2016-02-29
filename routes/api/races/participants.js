@@ -4,6 +4,7 @@ var express = require('express');
 var _ = require('underscore');
 var Steppy = require('twostep').Steppy;
 var db = require('../../../db');
+var mailer = require('../../../logic/mailer');
 
 var router = express.Router({mergeParams: true});
 
@@ -66,6 +67,15 @@ router.post('/', function(req, res, next) {
 				.value();
 
 			db.participants.insertOne(participant, this.slot());
+		},
+		function(err, participant) {
+			this.pass(participant);
+
+			mailer.sendMail({
+				to: participant.email,
+				subject: 'Успешная регистрация',
+				html: '<strong>test</strong>'
+			}, this.slot());
 		},
 		function(err, participant) {
 			res.json({participant: participant});

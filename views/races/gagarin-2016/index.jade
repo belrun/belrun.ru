@@ -11,7 +11,7 @@ append styles
 	link(rel="stylesheet", href="/stylesheets/views/races/gagarin-2016/index.css")
 
 append scripts
-	mixin requirejs('views/races/gagarin-2016/index')
+	mixin import('views/races/gagarin-2016/index.js')
 
 block body
 	- var now = Date.now();

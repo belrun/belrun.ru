@@ -19,10 +19,12 @@ configBuilder.register({
 			url: env.OPENSHIFT_MONGODB_DB_URL
 		},
 		mailer: {
-			service: 'Yandex',
-			auth: {
-				user: '',
-				pass: ''
+			transport: {
+				service: 'Yandex',
+				auth: {
+					user: env.MAILER_USER,
+					pass: env.MAILER_PASSWORD
+				}
 			}
 		}
 	}
