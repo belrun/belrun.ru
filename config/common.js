@@ -7,6 +7,7 @@ configBuilder.register({
 	name: 'common',
 	config: {
 		env: 'development',
+		timezone: 'Europe/Moscow',
 		listen: {
 			host: '127.0.0.1',
 			port: 9000

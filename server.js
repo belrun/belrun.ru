@@ -6,6 +6,7 @@ var routes = require('./routes');
 var db = require('./db');
 var locals = require('./helpers/locals');
 var mailer = require('./logic/mailer');
+var cron = require('./logic/cron');
 
 // middlewares
 var morgan = require('morgan');
@@ -14,6 +15,8 @@ var bodyParser = require('body-parser');
 var reqValidate = require('./middlewares/reqValidate');
 
 var config = require('./config');
+
+process.env.TZ = config.timezone;
 
 var createApp = function(callback) {
 	Steppy(
@@ -65,6 +68,8 @@ var start = function(callback) {
 		},
 		function() {
 			createApp(this.slot());
+
+			cron.start();
 		},
 		function(err, app) {
 			app.listen(config.listen.port, config.listen.host, this.slot());

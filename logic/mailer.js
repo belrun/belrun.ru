@@ -25,8 +25,18 @@ var queue = kue.createQueue({
 });
 
 queue.process('email', queueOptions.parallel, function(job, done) {
-	var data = job.data;
+	exports.send(job.data, done);
+});
 
+queue.on('error', function(err) {
+	console.error('Queue error happend:\n%s', err.stack);
+});
+
+queue.on('job failed', function(id, errorMessage) {
+	console.error('Queue job failed: %s', errorMessage);
+});
+
+exports.send = function(data, callback) {
 	Steppy(
 		function() {
 			if (data.template) {
@@ -63,16 +73,17 @@ queue.process('email', queueOptions.parallel, function(job, done) {
 			// send email via nodemailer transport
 			transporter.sendMail(data, this.slot());
 		},
-		done
+		callback
 	);
-});
+};
 
-exports.sendMail = function(data, callback) {
+exports.queue = function(data, callback) {
 	// put email to queue
 	queue.create('email', data)
 		.attempts(queueOptions.attempts)
 		.backoff(queueOptions.backoff)
 		.ttl(queueOptions.ttl)
+		// .removeOnComplete(true)
 		.save(callback);
 };
 

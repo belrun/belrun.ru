@@ -19,7 +19,8 @@ exports.migrate = function(client, done) {
 				title: 'Забег в честь первого полёта в космос',
 				description: '',
 				distance: 5000,
-				date: 1460271600000,
+				// date: 1460271600000,
+				date: Date.now() + 24 * 60 * 60 * 1000,
 				address: 'г. Белгород, Центральный парк',
 				layout: 'gagarin-2016',
 				schedule: [{

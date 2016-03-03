@@ -71,7 +71,7 @@ router.post('/', function(req, res, next) {
 		function(err, participant) {
 			this.pass(participant);
 
-			mailer.sendMail({
+			mailer.queue({
 				template: 'registration/complete',
 				to: participant.email
 			}, this.slot());
