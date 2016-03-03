@@ -35,12 +35,15 @@
     "east": "0.5.0",
     "east-mongo": "0.3.1",
     "jshint": "2.9.1",
-    "nodemailer-stub-transport": "1.0.0"
+    "nodemailer-stub-transport": "1.0.0",
+    "supervisor": "0.9.1"
   },
   "scripts": {
     "start": "supervisor server.js",
     "dev": "supervisor --force-watch --no-restart-on error server.js",
     "lint": "jshint ./",
-    "sync": "npm install && npm prune"
+    "sync": "npm install && npm prune",
+    "migrate": "east migrate",
+    "postinstall": "bower install"
   }
 }

@@ -25,9 +25,6 @@ var createApp = function(callback) {
 			app.set('config', config);
 
 			app.set('view engine', 'jade');
-			app.set('view options', {
-				doctype: 'html'
-			});
 			app.set('views', config.paths.siteViews);
 
 			app.disable('x-powered-by');
@@ -51,7 +48,9 @@ var createApp = function(callback) {
 			// routes
 			routes(app);
 
-			app.use('/mailer', mailer.queueApp);
+			if (config.env === 'development') {
+				app.use('/mailer', mailer.queueApp);
+			}
 
 			this.pass(app);
 		},
