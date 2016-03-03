@@ -2,10 +2,10 @@
 
 var express = require('express');
 var Steppy = require('twostep').Steppy;
-var path = require('path');
 var routes = require('./routes');
 var db = require('./db');
 var locals = require('./helpers/locals');
+var mailer = require('./logic/mailer');
 
 // middlewares
 var morgan = require('morgan');
@@ -25,7 +25,10 @@ var createApp = function(callback) {
 			app.set('config', config);
 
 			app.set('view engine', 'jade');
-			app.set('views', './views');
+			app.set('view options', {
+				doctype: 'html'
+			});
+			app.set('views', config.paths.siteViews);
 
 			app.disable('x-powered-by');
 
@@ -39,7 +42,7 @@ var createApp = function(callback) {
 			app.use(bodyParser.json());
 			app.use(bodyParser.urlencoded({extended: true}));
 
-			app.use(express.static(path.join(__dirname, 'public'), {
+			app.use(express.static(config.paths.public, {
 				lastModified: true
 			}));
 
@@ -47,6 +50,8 @@ var createApp = function(callback) {
 
 			// routes
 			routes(app);
+
+			app.use('/mailer', mailer.queueApp);
 
 			this.pass(app);
 		},
@@ -76,7 +81,7 @@ var start = function(callback) {
 
 start(function(err) {
 	if (err) {
-		console.error(err.stack);
+		console.error(err.stack || err);
 		process.exit(1);
 	} else {
 

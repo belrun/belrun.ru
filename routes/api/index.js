@@ -1,14 +1,14 @@
 'use strict';
 
-var _ = require('underscore');
 var express = require('express');
+var _ = require('underscore');
 
 var router = express.Router();
 
-var routes = ['races'];
+var files = ['races'];
 
-_(routes).each(function(route) {
-	router.use('/' + route, require('./' + route));
+_(files).each(function(file) {
+	require('./' + file)(router);
 });
 
 module.exports = function(app) {

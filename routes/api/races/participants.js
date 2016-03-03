@@ -72,9 +72,8 @@ router.post('/', function(req, res, next) {
 			this.pass(participant);
 
 			mailer.sendMail({
-				to: participant.email,
-				subject: 'Успешная регистрация',
-				html: '<strong>test</strong>'
+				template: 'registration/complete',
+				to: participant.email
 			}, this.slot());
 		},
 		function(err, participant) {
@@ -84,4 +83,6 @@ router.post('/', function(req, res, next) {
 	);
 });
 
-module.exports = router;
+module.exports = function(app) {
+	app.use('/:raceId/participants', router);
+};

@@ -12,6 +12,7 @@
 	"immed": true,
 	"eqeqeq": true,
 	"forin": true,
+	"esversion": 6,
 	"globals": {
 		"System": false
 	}

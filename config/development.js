@@ -1,6 +1,7 @@
 'use strict';
 
 var configBuilder = require('./builder');
+var stubTransport = require('nodemailer-stub-transport');
 
 require('./common');
 
@@ -9,14 +10,11 @@ configBuilder.register({
 	parent: 'common',
 	config: {
 		mailer: {
-			transport: {
-				debug: true,
-				logger: true,
-				service: 'Yandex',
-				auth: {
-					user: 'test',
-					pass: 'test'
-				}
+			transport: function() {
+				return stubTransport();
+			},
+			mailDefaults: {
+				from: 'BelRun Team <test@test.test>'
 			}
 		}
 	}

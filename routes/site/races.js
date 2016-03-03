@@ -2,7 +2,7 @@
 
 var Steppy = require('twostep').Steppy;
 var path = require('path');
-var db = require('../db');
+var db = require('../../db');
 
 module.exports = function(app) {
 	// temporary hardcode gagarin-2016 here

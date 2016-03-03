@@ -2,10 +2,14 @@
 
 var _ = require('underscore');
 
-var routes = ['api', 'main', 'races'];
+var files = ['api', 'site'];
+
+var routes = _(files).map(function(file) {
+	return require('./' + file);
+});
 
 module.exports = function(app) {
 	_(routes).each(function(route) {
-		require('./' + route)(app);
+		route(app);
 	});
 };
