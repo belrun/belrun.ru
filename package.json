@@ -46,6 +46,6 @@
     "lint": "jshint ./",
     "sync": "npm install && npm prune",
     "migrate": "east migrate",
-    "postinstall": "bower install"
+    "postinstall": "if [ -d \"$OPENSHIFT_REPO_DIR\" ]; then (export HOME=\"$OPENSHIFT_REPO_DIR\"/..; bower install) else (bower install) fi"
   }
 }
