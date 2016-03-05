@@ -5,7 +5,6 @@ var _ = require('underscore');
 var Steppy = require('twostep').Steppy;
 var path = require('path');
 var EmailTemplate = require('email-templates').EmailTemplate;
-var createStubTransport = require('nodemailer-stub-transport');
 var config = require('../config');
 var locals = require('../utils/locals');
 
@@ -17,6 +16,8 @@ var defaults = config.sender.defaults || {};
 
 // create stub transport instance
 if (transport === 'stub') {
+	var createStubTransport = require('nodemailer-stub-transport');
+
 	transport = createStubTransport();
 
 	transport.on('end', function(info) {
