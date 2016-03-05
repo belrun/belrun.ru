@@ -1,5 +1,9 @@
+//- script
+//- 	if config.env === 'development'
+//- 		include ../../../public/config/development.js
+//- 	else
+//- 		include ../../../public/config/production.js
+
+//- temporary include development config in production
 script
-	if config.env === 'development'
-		include ../../../public/config/development.js
-	else
-		include ../../../public/config/production.js
+	include ../../../public/config/development.js
