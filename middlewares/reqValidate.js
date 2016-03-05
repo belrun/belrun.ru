@@ -1,6 +1,6 @@
 'use strict';
 
-var validate = require('../helpers/validate');
+var validate = require('../utils/validate');
 var _ = require('underscore');
 
 module.exports = function() {

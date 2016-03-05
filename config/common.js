@@ -18,27 +18,25 @@ configBuilder.register({
 			siteViews: function(config) {
 				return path.join(config.paths.views, 'site');
 			},
-			mailerViews: function(config) {
-				return path.join(config.paths.views, 'mailer');
+			senderTemplates: function(config) {
+				return path.join(config.paths.views, 'sender');
 			}
 		},
 		mongodb: {
-			url: 'mongodb://127.0.0.1:27017/belrun'
+			dbName: 'belrun',
+			url: function(config) {
+				return 'mongodb://127.0.0.1:27017/' + config.mongodb.dbName;
+			}
 		},
-		redis: {
-			port: 6379,
-			host: '127.0.0.1',
-			db: 'belrun'
+		mq: {
+			user: 'guest',
+			pass: 'guest',
+			server: '127.0.0.1',
+			port: 5672
 		},
-		mailer: {
-			queue: {
-				parallel: 10,
-				attempts: 5,
-				backoff: {type: 'exponential'},
-				ttl: 60 * 1000
-			},
+		sender: {
 			transport: {},
-			mailDefaults: {}
+			defaults: {}
 		}
 	}
 });

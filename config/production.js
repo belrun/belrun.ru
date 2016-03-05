@@ -12,28 +12,31 @@ configBuilder.register({
 	config: {
 		env: 'production',
 		listen: {
-			port: env.OPENSHIFT_NODEJS_PORT,
-			host: env.OPENSHIFT_NODEJS_IP
+			port: env.NODE_PORT,
+			host: env.NODE_IP
 		},
 		mongodb: {
-			url: env.OPENSHIFT_MONGODB_DB_URL
+			url: function(config) {
+				return env.MONGODB_URL + config.mongodb.dbName;
+			}
 		},
-		redis: {
-			port: env.REDISCLOUD_PORT,
-			host: env.REDISCLOUD_HOSTNAME,
-			auth: env.REDISCLOUD_PASSWORD,
-			db: env.REDISCLOUD_DB
+		mq: {
+			user: env.CLOUDAMQP_USER,
+			pass: env.CLOUDAMQP_PASS,
+			server: env.CLOUDAMQP_SERVER,
+			port: env.CLOUDAMQP_PORT,
+			vhost: env.CLOUDAMQP_VHOST
 		},
-		mailer: {
+		sender: {
 			transport: {
-				service: 'Yandex',
+				service: env.SENDER_SERVICE,
 				auth: {
-					user: env.MAILER_USER,
-					pass: env.MAILER_PASSWORD
+					user: env.SENDER_USER,
+					pass: env.SENDER_PASS
 				}
 			},
-			mailDefaults: {
-				from: 'BelRun Team <' + env.MAILER_USER + '>'
+			defaults: {
+				from: 'BelRun Team <' + env.SENDER_USER + '>'
 			}
 		}
 	}

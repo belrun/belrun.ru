@@ -2,11 +2,12 @@
 
 var express = require('express');
 var Steppy = require('twostep').Steppy;
+var _ = require('underscore');
 var routes = require('./routes');
 var db = require('./db');
-var locals = require('./helpers/locals');
-var mailer = require('./logic/mailer');
-var cron = require('./logic/cron');
+var locals = require('./utils/locals');
+var mq = require('./logic/mq');
+var scheduler = require('./logic/scheduler');
 
 // middlewares
 var morgan = require('morgan');
@@ -15,6 +16,11 @@ var bodyParser = require('body-parser');
 var reqValidate = require('./middlewares/reqValidate');
 
 var config = require('./config');
+
+var stopSignals = [
+	'SIGHUP', 'SIGINT', 'SIGQUIT', 'SIGILL', 'SIGTRAP', 'SIGABRT',
+	'SIGBUS', 'SIGFPE', 'SIGUSR1', 'SIGSEGV', 'SIGUSR2', 'SIGTERM'
+];
 
 process.env.TZ = config.timezone;
 
@@ -51,10 +57,6 @@ var createApp = function(callback) {
 			// routes
 			routes(app);
 
-			if (config.env === 'development') {
-				app.use('/mailer', mailer.queueApp);
-			}
-
 			this.pass(app);
 		},
 		callback
@@ -67,27 +69,71 @@ var start = function(callback) {
 			db.init(config.mongodb, this.slot());
 		},
 		function() {
-			createApp(this.slot());
-
-			cron.start();
-		},
-		function(err, app) {
-			app.listen(config.listen.port, config.listen.host, this.slot());
+			mq.init(config.mq, this.slot());
 		},
 		function() {
+			createApp(this.slot());
+
+			scheduler.start();
+		},
+		function(err, app) {
+			this.pass(app);
+
+			app.httpServer = app.listen(
+				config.listen.port,
+				config.listen.host,
+				this.slot()
+			);
+		},
+		function(err, app) {
 			console.log('Listening on %s:%s', config.listen.host, config.listen.port);
 
-			this.pass(null);
+			this.pass(app);
 		},
 		callback
 	);
 };
 
-start(function(err) {
+var stop = function(app) {
+	Steppy(
+		function() {
+			scheduler.stop();
+
+			if (app.httpServer) {
+				console.log('Stopping http server, it can take up to %s ms', app.httpServer.timeout);
+
+				app.httpServer.close(this.slot());
+			} else {
+				this.pass(null);
+			}
+		},
+		function() {
+			console.log('Closing MQ connection');
+
+			mq.close(this.slot());
+		},
+		function(err) {
+			if (err) {
+				console.error(err.stack);
+				process.exit(1);
+			} else {
+				process.exit(0);
+			}
+		}
+	);
+};
+
+start(function(err, app) {
 	if (err) {
-		console.error(err.stack || err);
+		console.error(err.stack);
 		process.exit(1);
 	} else {
+		_(stopSignals).each(function(stopSignal) {
+			process.once(stopSignal, function() {
+				console.log('Got %s, stopping application...', stopSignal);
 
+				stop(app);
+			});
+		});
 	}
 });

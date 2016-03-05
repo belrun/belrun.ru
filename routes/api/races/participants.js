@@ -4,7 +4,7 @@ var express = require('express');
 var _ = require('underscore');
 var Steppy = require('twostep').Steppy;
 var db = require('../../../db');
-var mailer = require('../../../logic/mailer');
+var mq = require('../../../logic/mq');
 
 var router = express.Router({mergeParams: true});
 
@@ -71,9 +71,12 @@ router.post('/', function(req, res, next) {
 		function(err, participant) {
 			this.pass(participant);
 
-			mailer.queue({
-				template: 'registration/complete',
-				to: participant.email
+			mq.publish('sender', {
+				type: 'sender.sendMail',
+				body: {
+					template: 'registration/complete',
+					to: participant.email
+				}
 			}, this.slot());
 		},
 		function(err, participant) {
