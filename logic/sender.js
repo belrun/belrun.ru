@@ -14,7 +14,7 @@ var titleRegExp = /<title>(.+)<\/title>/i;
 var transport = config.sender.transport;
 var defaults = config.sender.defaults || {};
 
-// create stub transport instance
+// create stub transport instance (only for development)
 if (transport === 'stub') {
 	var createStubTransport = require('nodemailer-stub-transport');
 

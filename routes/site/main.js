@@ -6,7 +6,7 @@ module.exports = function(app) {
 	app.get('/', function(req, res, next) {
 		Steppy(
 			function() {
-				// underconstruction message
+				// @todo remove "under construction" view when everything is done
 				res.render('main');
 			},
 			next
